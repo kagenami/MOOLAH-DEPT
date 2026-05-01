@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOOLAH DEPTH</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #ffffff;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.12), transparent 18%),
+        radial-gradient(circle at 80% 10%, rgba(255, 215, 0, 0.14), transparent 18%),
+        radial-gradient(circle at 50% 90%, rgba(255, 255, 255, 0.10), transparent 22%),
+        linear-gradient(135deg, #050505, #111111 55%, #1b1226);
+      overflow-x: hidden;
+    }
+
+    .stars,
+    .stars::before,
+    .stars::after {
+      position: fixed;
+      inset: 0;
+      content: "";
+      pointer-events: none;
+      background-image:
+        radial-gradient(#ffffff 1px, transparent 1px),
+        radial-gradient(#ffd36b 1px, transparent 1px),
+        radial-gradient(#ffffff 2px, transparent 2px);
+      background-size: 90px 90px, 140px 140px, 220px 220px;
+      background-position: 0 0, 35px 55px, 90px 120px;
+      animation: sparkle 5s linear infinite;
+      opacity: 0.55;
+      z-index: -1;
+    }
+
+    .stars::before {
+      animation-duration: 8s;
+      opacity: 0.35;
+      transform: scale(1.2);
+    }
+
+    .stars::after {
+      animation-duration: 12s;
+      opacity: 0.25;
+      transform: scale(1.5);
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.45; }
+      50% { opacity: 0.85; }
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+      background: rgba(0, 0, 0, 0.72);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .nav {
+      max-width: 1180px;
+      margin: auto;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      letter-spacing: 3px;
+      font-weight: 900;
+      font-size: 22px;
+      text-transform: uppercase;
+    }
+
+    .brand span {
+      color: #ffd36b;
+    }
+
+    .cart-button {
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: #ffd36b;
+      color: #080808;
+      padding: 11px 16px;
+      border-radius: 999px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .hero {
+      max-width: 1180px;
+      margin: auto;
+      padding: 70px 20px 40px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .hero-card {
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 30px;
+      padding: 34px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 211, 107, 0.16);
+      color: #ffd36b;
+      font-size: 12px;
+      letter-spacing: 2px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 8vw, 86px);
+      line-height: 0.95;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .hero p {
+      color: #d7d7d7;
+      font-size: 18px;
+      line-height: 1.65;
+      max-width: 690px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .primary,
+    .secondary {
+      padding: 14px 18px;
+      border-radius: 16px;
+      border: 0;
+      text-decoration: none;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: #ffffff;
+      color: #050505;
+    }
+
+    .secondary {
+      background: transparent;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .feature-box {
+      min-height: 380px;
+      border-radius: 34px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background:
+        linear-gradient(145deg, rgba(255, 211, 107, 0.12), rgba(255, 255, 255, 0.04)),
+        #070707;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-box::before {
+      content: "✦";
+      position: absolute;
+      top: 24px;
+      right: 28px;
+      font-size: 90px;
+      color: rgba(255, 211, 107, 0.25);
+      animation: pulseStar 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseStar {
+      0%, 100% { transform: scale(1); opacity: 0.35; }
+      50% { transform: scale(1.18); opacity: 0.85; }
+    }
+
+    .shirt-shape {
+      width: 210px;
+      height: 240px;
+      background: linear-gradient(160deg, #0c0c0c, #242424);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 36px 36px 20px 20px;
+      box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.05), 0 20px 60px rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .controls {
+      max-width: 1180px;
+      margin: 10px auto 22px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 210px;
+      gap: 12px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(0, 0, 0, 0.55);
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 15px 16px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .products {
+      max-width: 1180px;
+      margin: auto;
+      padding: 0 20px 70px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .product {
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.075);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.35);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .product:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 211, 107, 0.55);
+    }
+
+    .product-image {
+      min-height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 18px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 211, 107, 0.2), transparent 25%),
+        linear-gradient(145deg, #050505, #202020);
+      color: #ffd36b;
+      font-weight: 900;
+      font-size: 24px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .product-body {
+      padding: 17px;
+    }
+
+    .category {
+      color: #ffd36b;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+
+    .product h3 {
+      min-height: 72px;
+      font-size: 16px;
+      line-height: 1.35;
+      margin-bottom: 12px;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      color: #cfcfcf;
+      font-size: 13px;
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+
+    .price {
+      font-size: 25px;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .add {
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      background: #ffd36b;
+      color: #050505;
+      padding: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .cart-panel {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 390px;
+      max-width: 92vw;
+      height: 100vh;
+      background: rgba(8, 8, 8, 0.96);
+      border-left: 1px solid rgba(255, 255, 255, 0.16);
+      z-index: 50;
+      transition: right 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-panel.open {
+      right: 0;
+    }
+
+    .cart-head {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .close-cart {
+      background: transparent;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow: auto;
+      padding: 16px;
+    }
+
+    .cart-item {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .cart-item strong {
+      display: block;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .cart-bottom {
+      padding: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .checkout {
+      display: block;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 16px;
+      background: #ffffff;
+      color: #050505;
+      padding: 14px;
+      font-weight: 900;
+      margin-top: 12px;
+    }
+
+    footer {
+      max-width: 1180px;
+      margin: auto;
+      padding: 0 20px 40px;
+      color: #bdbdbd;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .products {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .nav {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero {
+        padding-top: 45px;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .products {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <header>
+    <nav class="nav">
+      <div class="brand">MOOLAH <span>DEPTH</span></div>
+      <button class="cart-button" onclick="toggleCart()">Cart: <span id="cartCount">0</span></button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-card">
+        <div class="tag">Oversized tees. Heavyweight fits. Street mood.</div>
+        <h1>Wear dark. Shine loud.</h1>
+        <p>
+          MOOLAH DEPTH brings dark streetwear, heavyweight fits, and shining night energy.
+          Shop heavyweight tees, hoodies, sweatshorts, pullovers, and essentials with a night sky background full of small shining stars.
+        </p>
+        <div class="hero-actions">
+          <a class="primary" href="#shop">Shop Collection</a>
+          <a class="secondary" href="https://shopee.ph/moolahdept#product_list" target="_blank">Visit Shopee Store</a>
+        </div>
+      </div>
+
+      <div class="feature-box">
+        <div class="shirt-shape">MOOLAH<br />DEPTH</div>
+        <p style="margin-top: 22px; color: #d6d6d6;">Little stars. Heavy fabric. Clean flex.</p>
+      </div>
+    </section>
+
+    <section id="shop" class="controls">
+      <input id="searchInput" type="text" placeholder="Search product name..." oninput="renderProducts()" />
+      <select id="categorySelect" onchange="renderProducts()">
+        <option value="All">All Products</option>
+        <option value="Tee">Tees</option>
+        <option value="Shorts">Shorts</option>
+        <option value="Hoodie">Hoodies</option>
+        <option value="Longsleeves">Longsleeves</option>
+        <option value="Pullover">Pullover</option>
+        <option value="Essentials">Essentials</option>
+      </select>
+    </section>
+
+    <section class="products" id="productGrid"></section>
+  </main>
+
+  <aside class="cart-panel" id="cartPanel">
+    <div class="cart-head">
+      <h2>Your Cart</h2>
+      <button class="close-cart" onclick="toggleCart()">Close</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-bottom">
+      <h3>Total: ₱<span id="cartTotal">0</span></h3>
+      <a class="checkout" href="https://shopee.ph/moolahdept#product_list" target="_blank">Checkout on Shopee</a>
+    </div>
+  </aside>
+
+  <footer>
+    This is a sample storefront page for practice. Product names, prices, ratings, and sold counts are based on the shared product list. Images are not copied from Shopee and are shown as simple placeholder designs.
+  </footer>
+
+  <script>
+    const products = [
+      { name: 'MOOLAH “YOUNG RICH ASIAN” TEE IN BLACK', price: 749, rating: '4.4', sold: '77 sold', category: 'Tee' },
+      { name: 'MOOLAH “NEVAMISS” IN BLACK', price: 789, rating: '5.0', sold: '10 sold', category: 'Tee' },
+      { name: 'MOOLAH DEPT. “DOLLAH” TEE IN BLACK', price: 789, rating: '5.0', sold: '84 sold', category: 'Tee' },
+      { name: 'MOOLAH “MAKE MOOLAH NOT FRIENDS” TEE IN BLACK', price: 750, rating: '4.6', sold: '225 sold', category: 'Tee' },
+      { name: 'MOOLAH “FEELIKE BURBRRR” SHIRT IN WHITE & BLACK', price: 568, rating: '4.7', sold: '401 sold', category: 'Tee' },
+      { name: 'MOOLAH “TRAP A LOT” TEE IN BLACK', price: 750, rating: '4.7', sold: '205 sold', category: 'Tee' },
+      { name: 'MOOLAH DEPT LIMITED EDITION FADED CAMOUFLAGE JORTS', price: 949, rating: '5.0', sold: '12 sold', category: 'Shorts' },
+      { name: 'OG LOGO “GLITTAH” PULLOVER', price: 1099, rating: '4.7', sold: '3 sold', category: 'Pullover' },
+      { name: 'OG LOGO GLITTAH PINK & SILVER TEE IN BLACK', price: 789, rating: '5.0', sold: '13 sold', category: 'Tee' },
+      { name: 'MOOLAH “MR. DOLLAH” TEE IN BLACK', price: 750, rating: '4.6', sold: '55 sold', category: 'Tee' },
+      { name: 'MOOLAH “NEVAMISS” SWEATSHORT IN RED', price: 950, rating: '4.5', sold: '7 sold', category: 'Shorts' },
+      { name: 'MOOLAH “BIG CASH” TEE IN BLACK', price: 789, rating: '5.0', sold: '34 sold', category: 'Tee' },
+      { name: 'MOOLAH “SW4G KILL4H” HOODIE IN LIGHT GRAY', price: 1749, rating: '4.7', sold: '1 sold', category: 'Hoodie' },
+      { name: 'MOOLAH DEPT. “BASIC LOGO SWEATSHORT”', price: 899, rating: '4.4', sold: '36 sold', category: 'Shorts' },
+      { name: '6UNNA LONGSLEEVES IN PINK', price: 1349, rating: '4.8', sold: '51 sold', category: 'Longsleeves' },
+      { name: 'MOOLAH “BUNNY MONEY” SWEATSHORTS IN CLOUD WHITE', price: 950, rating: '4.7', sold: '6 sold', category: 'Shorts' },
+      { name: 'MOOLAH “STALLION” TEE IN BLACK & WHITE', price: 789, rating: '4.8', sold: '10 sold', category: 'Tee' },
+      { name: 'MOOLAH “LIVIN HARDY” TEE IN BLACK', price: 789, rating: '5.0', sold: '62 sold', category: 'Tee' },
+      { name: '6UNNA LONGSLEEVES IN BLACK', price: 1349, rating: '5.0', sold: '70 sold', category: 'Longsleeves' },
+      { name: 'MOOLAH “WORD” TEE IN MAROON', price: 789, rating: '4.7', sold: '2 sold', category: 'Tee' },
+      { name: 'NEVA TRUST A BADDIE SWEATSHORTS IN BLACK AND LIGHT GRAY', price: 1000, rating: '5.0', sold: '33 sold', category: 'Shorts' },
+      { name: 'MOOLAH “CA$H” TEE IN BLACK', price: 789, rating: '4.7', sold: '1 sold', category: 'Tee' },
+      { name: 'MOOLAH “BIG SPENDA” TEE IN LIGHT GRAY', price: 789, rating: '5.0', sold: '4 sold', category: 'Tee' },
+      { name: 'MOOLAH “RACKS” SWEATSHORTS IN AQUA BLUE & BLACK', price: 949, rating: '4.7', sold: '1 sold', category: 'Shorts' },
+      { name: 'MOOLAH “THA ESSENTIALS” BOXER BRIEF', price: 349, rating: '4.8', sold: '36 sold', category: 'Essentials' },
+      { name: 'MOOLAH “SWAG KILL4H” HOODIE IN BLACK', price: 1749, rating: '5.0', sold: '11 sold', category: 'Hoodie' }
+    ];
+
+    const cart = [];
+
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const category = document.getElementById('categorySelect').value;
+
+      const filtered = products.filter(product => {
+        const matchesSearch = product.name.toLowerCase().includes(search);
+        const matchesCategory = category === 'All' || product.category === category;
+        return matchesSearch && matchesCategory;
+      });
+
+      grid.innerHTML = filtered.map((product, index) => `
+        <article class="product">
+          <div class="product-image">${product.category}</div>
+          <div class="product-body">
+            <div class="category">${product.category}</div>
+            <h3>${product.name}</h3>
+            <div class="meta">
+              <span>⭐ ${product.rating}</span>
+              <span>${product.sold}</span>
+            </div>
+            <div class="price">₱${product.price.toLocaleString()}</div>
+            <button class="add" onclick="addToCart(${products.indexOf(product)})">Add to Cart</button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function addToCart(index) {
+      cart.push(products[index]);
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById('cartItems');
+      const cartCount = document.getElementById('cartCount');
+      const cartTotal = document.getElementById('cartTotal');
+
+      cartCount.textContent = cart.length;
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p style="color: #cfcfcf;">Your cart is empty.</p>';
+      } else {
+        cartItems.innerHTML = cart.map(item => `
+          <div class="cart-item">
+            <strong>${item.name}</strong>
+            <span>₱${item.price.toLocaleString()}</span>
+          </div>
+        `).join('');
+      }
+
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      cartTotal.textContent = total.toLocaleString();
+    }
+
+    function toggleCart() {
+      document.getElementById('cartPanel').classList.toggle('open');
+    }
+
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+</html>
